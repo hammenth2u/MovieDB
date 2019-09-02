@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ movie.title }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ movie.title }}</h1>
+    
+    <h2>Casting</h2>
+
+    <ul>
+    {#
+    La propriété castings de movie nous donne tous les Casting du film.
+    C'est un tableau donc on boucle dessus.
+    Pour chaque Casting, la propriété person nous donne les infos de l'acteur de ce Casting
+    On peut ainsi afficher le nom de tous les acteur du film
+     #}
+    {# {% for casting in movie.castings %} #}
+    {% for casting in cast %}
+        <li>{{ casting.person.name }} ({{ casting.role }})</li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}
