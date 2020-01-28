@@ -38,10 +38,21 @@ class Person
      */
     private $castings;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Team", mappedBy="person", orphanRemoval=true)
+     */
+    private $teams;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->castings = new ArrayCollection();
+        $this->teams = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -110,6 +121,37 @@ class Person
             // set the owning side to null (unless already changed)
             if ($casting->getPerson() === $this) {
                 $casting->setPerson(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Team[]
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Team $team): self
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+            $team->setPerson($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): self
+    {
+        if ($this->teams->contains($team)) {
+            $this->teams->removeElement($team);
+            // set the owning side to null (unless already changed)
+            if ($team->getPerson() === $this) {
+                $team->setPerson(null);
             }
         }
 

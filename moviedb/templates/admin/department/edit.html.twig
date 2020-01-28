@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification de {{ department.name }}{% endblock %}
+
+{% block body %}
+
+<div>
+    <h1>Modification de {{ department.name }}</h1>
+
+    {# On affiche le formulaire avec la mèthode la plus simple #}
+    {{ form(formDepartment, {action: path('admin_department_edit', {department: department.id})}) }}
+
+    <form action="{{ path('admin_department_delete') }}" method="post">
+            <input type="hidden" name="department_id" value="{{ department.id }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete-department') }}">
+            <button class="btn btn-xs btn-link" type="submit" name="delete">Supprimer<span class="glyphicon glyphicon-remove"></span></button>
+    </form>
+</div>
+{% endblock %}

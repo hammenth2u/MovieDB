@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello JobController!{% endblock %}
+
+{% block body %}
+
+<div>
+    <h1>Job</h1>
+
+    
+    <ul>
+        {% for job in jobs %}
+        <li><a href="{{ path('admin_job_edit', {'job': job.id}) }}">{{ job.name }}</a></li>
+        {% endfor %}
+    </ul>
+
+    {# On affiche le formulaire avec la mèthode la plus simple #}
+    {{ form(formJob, {action: path('admin_job_new')}) }}
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Casting{% endblock %}
+
+{% block body %}
+    <h1>Create new Casting</h1>
+
+    {{ include('admin/casting/_form.html.twig') }}
+
+    <a href="{{ path('casting_index') }}">back to list</a>
+{% endblock %}

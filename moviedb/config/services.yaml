@@ -25,3 +25,11 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+
+    # On configure FileUploadManager pour que son constructeur reçoive une donnée qui serait précisée ici dans ce fichier de config
+    # $targetFolderPath est la variable où on précise le chemin du dossier cible où seront stockées les images des affiches des films
+    App\Service\FileUploadManager:
+        arguments:
+            #Il faudra modifier le .gitignore pour que le dossier ignoré corresponde au chemin précisé ici
+            $targetFolderPath: '%env(resolve:MOVIE_TARGET_FOLDER_PATH)%'

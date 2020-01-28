@@ -1,0 +1,12 @@
+{{ form_start(form) }}
+    {{ form_row(form.title) }}
+    
+    {{ form_row(form.genres) }}
+    {# Ici on va pouvoir insérer une balise IMG si l'image existe #}
+    {% if movie.image %}
+        <img src="{{ asset(movie.image) }}" height="200">
+    {% endif %}
+
+    {{ form_row(form.imageFile) }}    
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

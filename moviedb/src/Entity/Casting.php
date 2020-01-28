@@ -38,6 +38,11 @@ class Casting
      */
     private $movie;
 
+    public function __toString()
+    {
+        return $this->role . '→ ' . $this->person->getName() . ' - '. $this->movie->getTitle();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

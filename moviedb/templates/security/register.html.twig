@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    <h1>Inscription</h1>
+    
+    {{ form_start(registerForm) }}
+
+        {{ form_label(registerForm.email) }}
+        {{ form_widget(registerForm.email) }}
+
+        {{ form_row(registerForm.password) }}
+        {{ form_row(registerForm.submit) }}
+    {{ form_end(registerForm) }}
+    {# Lien de connexion #}
+    <a href="{{ path('app_login') }}">Se connecter</a>
+{% endblock %}

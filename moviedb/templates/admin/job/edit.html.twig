@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification de {{ job.name }}{% endblock %}
+
+{% block body %}
+
+<div>
+    <h1>Modification de {{ job.name }}</h1>
+
+    {# On affiche le formulaire avec la mèthode la plus simple #}
+    {{ form(formJob, {action: path('admin_job_edit', {job: job.id})}) }}
+
+    <form action="{{ path('admin_job_delete') }}" method="post">
+            <input type="hidden" name="job_id" value="{{ job.id }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete-job') }}">
+            <button class="btn btn-xs btn-link" type="submit" name="delete">Supprimer<span class="glyphicon glyphicon-remove"></span></button>
+    </form>
+</div>
+{% endblock %}

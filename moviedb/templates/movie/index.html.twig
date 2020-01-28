@@ -8,7 +8,15 @@
 
     <ul>
     {% for movie in movies %}
-        <li>{{ movie.title }}</li>
+        {# Ici une solution avec un if qui teste si le slug est null dans le movie #}
+        {# {% if movie.slug is null %}
+        pas de lien
+        {% else %}
+        <li><a href="{{ path('movie_single_details', {slug: movie.slug}) }}">{{ movie.title }}</a></li>
+        {% endif %} #}
+
+        {# Ici une solution qui remplace le slug par un 0 si le slug est null #}
+        <li><a href="{{ path('movie_single_details', {slug: movie.slug|default('-')}) }}">{{ movie.title }}</a></li>
     {% endfor %}
     </ul>
 

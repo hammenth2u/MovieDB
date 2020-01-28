@@ -2,48 +2,38 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Movie;
-use App\Entity\Person;
-use App\Entity\Genre;
-use App\Entity\Casting;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Faker;
-
-//les commandes dans le terminal
-// 1: composer require --dev doctrine/doctrine-fixtures-bundle pour telecharger fixture
-// 2: php bin/consle make:fixture et donner le nom de la class
-// pour telecharger faker : composer require fzaninotto/faker
+use Faker\Factory;
+use Nelmio\Alice\Loader\NativeLoader;
 
 class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-               // On crée une instance de sentance en français
-               $faker = Faker\Factory::create('fr_FR');
-               // On passe le Manager de Doctrine à Faker !
-               $populator = new Faker\ORM\Doctrine\Populator($faker, $manager);
-       
-               $populator->addEntity('App\Entity\Movie', 10, array(
-                   'title' => function() use ($faker) { return $faker->sentence(); },
-                 ));
-                 $insertedEntities = $populator->execute();
-               // On peut passer en 3ème paramètre le générateur de notre choix, ici un "name" cohérent pour Person
-               $populator->addEntity('App\Entity\Person', 20, array(
-                 'name' => function() use ($faker) { return $faker->name(); },
-               ));
-               $insertedEntities = $populator->execute();
-               $populator->addEntity('App\Entity\Genre', 10, array(
-                   'name' => function() use ($faker) { return $faker->word(); },
-                 ));
+        // Malgré la config dans config/packages/dev/nelmio_alice.yaml
+        // On est obligé d'ajouter cette ligne (et son use) pour avoir des résultats en français :
+        $faker = Factory::create('fr_FR');
 
-                 $populator->addEntity('App\Entity\Casting', 20, array(
-                     'role' => function() use ($faker) { return $faker->word(); },
-                 ));
-               // On demande à Faker d'éxécuter les ajouts
-               $insertedEntities = $populator->execute();
-               // Si besoin de manipuler les entités créées
-               // dump($insertedEntities);
-           
+        $loader = new NativeLoader($faker);
+        
+        // Importe le fichier de fixtures et récupère les entités générés
+        $entities = $loader->loadFile(__DIR__.'/fixtures.yaml')->getObjects();
+        
+        // Persiste chacun des objets à enregistrer en BDD
+        foreach ($entities as $entity) {
+            $manager->persist($entity);
+        };
+        
+        // Flush pour exécuter les requêtes SQL
+        $manager->flush();
+
+        /*
+        Au lieu de coder nos entités comme avec la librairie Faker,
+        on utiliser un fichier YAML qui, lui, définir le type de données qu'on veut.
+        Le code ici, reste nécessaire pour DoctrineFixturesBundle
+        Lorsqu'on appel ma comamnde doctrine:fixtures:load (d:f:l), on lance la méthode load() d'ici
+        Toutes les modificiations et les précisions se passeront dans l'autre fichier
+        */
     }
 }

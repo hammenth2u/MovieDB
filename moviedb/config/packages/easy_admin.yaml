@@ -1,0 +1,48 @@
+easy_admin:
+    site_name: 'MovieDB'
+    design:
+        brand_color: '#3c78d8'
+    #     menu: 
+    #       - label: 'Films'
+    #         icon: 'camera'
+    #         children: ['Personnes', 'Postes']
+    entities:
+        # List the entity class name you want to manage
+        Films:
+            class: App\Entity\Movie
+            form:
+                fields:
+                    - title
+                    - genres
+                    -
+                        property: 'castings'
+                        type: 'collection'
+                        type_options:
+                            entry_type: App\Form\CastingType
+                            by_reference: false
+                    # Le champs castings (merci Fanny) ajoute un CatingType dans le formuaire. Do.nc on peut ajouter les FormType qu'on veut dans l'admin et en plus ici on peut gérer les relations pultiples antres Movie et Casting (OneToMany)
+                    # C'est un moyen de dépasser le problème de la relation entre les deux entités puisque le owner est Casting
+        Personnes:
+            class: App\Entity\Person
+        Casting:
+            class: App\Entity\Casting
+            search:
+                fields: ['movie.title', 'person.name']
+        Genre:
+            class: App\Entity\Genre
+        Postes:
+            class: App\Entity\Job
+            # list est la propriété qui permet de spécifier les colonnes qu'on veut voir dans la liste
+            list:
+                fields: ['id', 'name', 'department']
+            # search précise les champs parmi lesquelles rechercher des informations. On peut préciser des champs d'autres entités en relation avec celle-ci
+            search:
+                fields: ['name', 'department.name']
+            # form permet de préciser la liste des champs visible dans le formulaire de cette entité
+            # On devra bien sûr gérer les champs non affichés, soit de manière automatique, soit parce que les relations sont gérées dans une autre entité
+            form:
+                fields: ['name', 'department']
+        Departements:
+            class: App\Entity\Department
+        Equipes:
+            class: App\Entity\Team

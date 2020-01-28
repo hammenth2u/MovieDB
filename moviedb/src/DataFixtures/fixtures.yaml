@@ -2,31 +2,40 @@
 #    genre_{1..42}: #le nombre d'iteration d'entité souhaité ici : genre_1, genre_2...genre_23
 #        name: '<word()>' <-- numberBetween(0,5), sentence(),(...)  cf (https://github.com/fzaninotto/Faker#basic-usage)
 
-App\Entity\Category:
-    category_{1..10}:
-        name: '<text()>' 
-
-
-App\Entity\Product:
-    product_{1..10}:
-        name: '<text()>'
-        category: '@category*' # j'associe une categorie random
-        #category: '@category_8' j'associe une categorie précise (8 eme générée)
-
-# Attention, le sens de génération est important 
-# Par exemple , je ne peux pas utiliser des genres qui n'existent pas encore ;)
+# Les mots clés des types de données ici sont les méthodes utilisées par Faker
 
 App\Entity\Genre:
-    my_genre{1..23}:
-        name: '<movieGenre()>' 
+    genre_{1..23}:
+        name: '<word()>'
+        createdAt: '<date_create()>'
 
 App\Entity\Movie:
     movie_{1..50}:
-        title: '<movieTitle()>'
-        genres: ['@my_genre12'] # j'associe un genre précis en tant qu'association sur la propriété $genres de mon Movie
-        #genres: ['@my_genre1', '@my_genre21'] # j'associe plusieurs genres precis 
-        #genres: '5x @my_genre*' # j'associe 5 genres (5X) au aléatoire (@my_genre*)               
-        #genres: '@my_genre{1..3}' # j'associe les genres généré de 1 à 3 
-        #    je force l'association d'un genre sur un movie selon le nombre d'iteration ex: my_genre22 / movie_22, my_genre14 / movie_14 ...        
-        #    Ceci est notamment pratique lorsque l'on souhaite garder une cochérence sur des ID 
-        #genres: '@my_genre<current()>' 
+        title: '<text(55)>'
+        createdAt: '<date_create()>'
+        genres: '3x @genre_*'
+
+App\Entity\Person:
+    person_{1..10}:
+        name: '<name()>'
+        createdAt: '<date_create()>' 
+
+App\Entity\Casting:
+    casting_{1..20}:
+        role: '<firstname()>'
+        creditOrder: '<numberBetween(1, 30)>'
+        person: '@person_*'
+        movie: '@movie_*' 
+
+App\Entity\Department:
+    department_{1..10}:
+        name: '<word()>'
+        createdAt: '<date_create()>' 
+
+App\Entity\Job:
+    job_{1..18}:
+        name: '<word()>'
+        createdAt: '<date_create()>' 
+        department: '@department_*'
+# Quand on écrit '@departement_*' on fait référence au departements créé plus haut (ligne 31)
+# Le mot department derrière le @ est le même qu'a la ligne 31

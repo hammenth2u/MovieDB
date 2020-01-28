@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DepartmentController!{% endblock %}
+
+{% block body %}
+
+<div>
+    <h1>Department</h1>
+
+    
+    <ul>
+        {% for department in departments %}
+        <li><a href="{{ path('admin_department_edit', {'department': department.id}) }}">{{ department.name }}</a></li>
+        {% endfor %}
+    </ul>
+
+    {# On affiche le formulaire avec la mèthode la plus simple #}
+    {{ form(formDepartment, {action: path('admin_department_new')}) }}
+</div>
+{% endblock %}
